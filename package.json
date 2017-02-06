@@ -1,0 +1,18 @@
+{
+  "name": "vegasimple",
+  "version": "1.0.0",
+  "description": "Web application for interacting with Vega Lite visuals.",
+  "main": "app.js",
+  "scripts": {
+    "start": "NODE_ENV=development supervisor --extensions 'node,js,/bin/www,html,css,client,server' ./server/bin/www"
+  },
+  "author": "Austin Rose",
+  "repository": "https://github.com/austintrose/vegasimple",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.1",
+    "morgan": "^1.8.0",
+    "supervisor": "^0.12.0",
+    "swig": "^1.4.2"
+  }
+}
