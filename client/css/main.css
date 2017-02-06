@@ -1,3 +1,14 @@
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+#vis {
+    height: 350px;
+}
+
+@media screen {
+    /* Add space between vega-embed links  */
+    .vega-actions a {
+        margin-right: 5px;
+    }
+}

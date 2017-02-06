@@ -8,15 +8,29 @@
 </head>
 <body>
 
-<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!--Bootstrap jQuery-->
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" charset="utf-8"></script>
 
-{% block js %}
+<!--Vega Reqs-->
+<script type="text/javascript" src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="//vega.github.io/vega/vega.js" charset="utf-8"></script>
+<script type="text/javascript" src="//vega.github.io/vega-lite/vega-lite.js" charset="utf-8"></script>
+<script type="text/javascript" src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
+
+<!--jQuery My Data Binding-->
+<script type="text/javascript" src="/js/sugar.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/jquerymy-1.2.8.min.js" charset="utf-8"></script>
+
+{% block js_pre %}
 {% endblock %}
 
 <div class="container">
     {% block content %}
     {% endblock %}
 </div>
+
+{% block js_post %}
+{% endblock %}
 </body>
 </html>
