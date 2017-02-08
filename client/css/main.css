@@ -1,14 +1,23 @@
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin: 20px auto;
 }
 
 #vis {
-    height: 350px;
 }
 
-@media screen {
-    /* Add space between vega-embed links  */
-    .vega-actions a {
-        margin-right: 5px;
-    }
+#new_actions_span a {
+    margin-left: 5px;
+}
+
+#vis canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#new_actions_span {
+    float: right;
 }
