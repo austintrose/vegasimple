@@ -6,10 +6,18 @@
 {% block content %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
+        <button class="btn btn-default" id="load_btn">Load Saved Graph</button>
         <span id="new_actions_span"></span>
     </div>
 </div>
 
+<div id="load_saved_div" hidden>
+    <br>
+    <br>
+            <label>Paste JSON here.</label>
+            <textarea id="load_saved_ta" cols="30"></textarea>
+        <button type="submit" class="btn" id="load_sub_btn">Submit</button>
+</div>
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">

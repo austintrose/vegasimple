@@ -8,6 +8,7 @@ router.get('/', function(req, res) {
     })
 }
 
+
 // Check the session object to know if they're already logged in. If so,
 // update that object with the latest copy from the database. Otherwise
 // just render the login page.

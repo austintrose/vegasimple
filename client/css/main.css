@@ -21,3 +21,7 @@ body {
 #new_actions_span {
     float: right;
 }
+
+textarea {
+    width: 100%;
+}

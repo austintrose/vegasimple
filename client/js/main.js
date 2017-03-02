@@ -1,4 +1,14 @@
 $(document).ready(function(){
+    $('#load_btn').on('click', function(e) {
+        $('#load_saved_div').show();
+    })
+
+    $('#load_sub_btn').on('click', function(e) {
+        redo_vega(JSON.parse($('#load_saved_ta').val()))
+        $('#load_saved_div').hide();
+    });
+
+
     // jQuery elements that won't change.
     let vega_form = $('#vega_form')
         ,update_graph_button = $('#update_graph_button')
