@@ -1,58 +1,16 @@
 $(document).ready(function(){
-
     // jQuery elements that won't change.
     let vega_form = $('#vega_form')
         ,update_graph_button = $('#update_graph_button')
         ,new_actions_span = $('#new_actions_span')
-        ,vis_div = $('#vis')
-        ,x_axis_title_div = $('#x_axis_title_div')
-        ,y_axis_title_div = $('#y_axis_title_div')
-    ;
+        ,vis_div = $('#vis');
 
-    let y_axis = {
-        'title': "Number of Records",
-    };
+    let initial_spec = single_seattle_weather_data();
 
-    let encoding_y = {
-        "aggregate": "count",
-        "field": "*",
-        "type": "quantitative",
-        "axis": y_axis,
-    };
-
-    let x_axis = {
-        'title': 'BIN(precipitation)',
-    };
-
-    let encoding_x = {
-        "bin": true,
-        "field": "precipitation",
-        "type": "quantitative",
-        "axis": x_axis
-    };
-
-    let spec_data = {
-        "url": "https://vega.github.io/vega-lite/data/seattle-weather.csv",
-    };
-
-    let spec_encoding = {
-        "x": encoding_x,
-        "y": encoding_y,
-    };
-
-    let vega_spec = {
-        "data": spec_data,
-        "mark": "bar",
-        "encoding": spec_encoding
-    };
-
-    // This recreates the graph.
-    function redo_vega() {
+    function redo_vega(spec) {
         let embed_spec = {
             mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
-            spec: vega_spec
-            // You can add more vega-embed configuration properties here.
-            // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
+            spec: spec
         };
 
         let current_height = vis_div.css('height');
@@ -60,12 +18,8 @@ $(document).ready(function(){
 
         // Embed the visualization in the container with id `vis`
         vg.embed("#vis", embed_spec, function(error, result) {
-            // Callback receiving the View instance and parsed Vega spec
-            // result.view is the View, which resides under the '#vis' element
             new_actions_span.empty();
-
             let vega_actions_div = $('.vega-actions');
-
             vega_actions_div.find('a').each(function(i) {
                 let link = $(this).detach();
                 link.addClass('btn btn-default');
@@ -74,76 +28,159 @@ $(document).ready(function(){
 
             vis_div.css('min-height', '0px');
         });
-
     }
 
-    // Create the graph for the first time.
-    redo_vega();
-
-    vega_form.on('submit', function(e) {
-        e.preventDefault();
-        redo_vega();
+    vega_form.on('submit', function (e) {
+       e.preventDefault();
     });
 
-    update_graph_button.on('click', function (e) {
-        redo_vega();
+    redo_vega(initial_spec);
+
+    $('#vega_form').jsonForm({
+        schema: {
+            data: {
+                type: "object",
+                title: "Data",
+                properties: {
+                    url: {
+                        type: "string",
+                        title: "Data URL",
+                        default: initial_spec.data.url,
+                    }
+                },
+            },
+            mark: {
+                type: 'string',
+                title: 'Mark Type',
+                enum: ['area', 'bar', 'tick', 'text', 'circle', 'square', 'line', 'point'],
+                default: initial_spec.mark,
+            },
+            encoding: {
+                default: initial_spec.encoding,
+                type: "object",
+                title: "Encoding",
+                properties: {
+                    x: {
+                        type: "object",
+                        title: "X Axis",
+                        properties: {
+                            enabled: {
+                                type: 'boolean',
+                                title: 'X Axis Enabled',
+                                default: true,
+                            },
+                            field: {
+                                type: "string",
+                                title: "Field (from CSV)",
+                                default: initial_spec.encoding.x.field,
+                            },
+                            bin: {
+                                type: "boolean",
+                                title: "Discretize Data"  ,
+                                default: initial_spec.encoding.x.bin,
+                            },
+                            type: {
+                                type: 'string',
+                                title: 'Field Type',
+                                enum: ['quantitative', 'temporal', 'ordinal', 'nominal'],
+                                default: initial_spec.encoding.x.type,
+                            },
+                            timeUnit: {
+                                type: "string",
+                                title: "Time Unit (for 'Temporal' field type)",
+                                enum: ["none", "date", "day", "hours", "hoursminutes", "hoursminutesseconds", "milliseconds", "minutes", "minutesseconds", "month", "monthdate", "quarter", "quartermonth", "seconds", "secondsmilliseconds", "year", "yearmonth", "yearmonthdate", "yearmonthdatehours", "yearmonthdatehoursminutes", "yearmonthdatehoursminutesseconds", "yearquarter", "yearquartermonth" ],
+                                default: initial_spec.encoding.x.timeUnit,
+                            },
+                            aggregate: {
+                                type: "string",
+                                title: "Aggregate Function",
+                                enum: ["none", "argmax", "argmin", "average", "count", "distinct", "max", "mean", "median", "min", "missing", "modeskew", "q1", "q3", "stdev", "stdevp", "sum", "valid", "values", "variance", "variancep" ],
+                                default: initial_spec.encoding.x.aggregate,
+                            },
+                        }
+                    },
+                    y: {
+                        type: "object",
+                        title: "Y Axis",
+                        properties: {
+                            enabled: {
+                                type: 'boolean',
+                                title: 'Y Axis Enabled',
+                                default: true,
+                            },
+                            field: {
+                                type: "string",
+                                title: "Field (from CSV)",
+                                default: initial_spec.encoding.y.field,
+                            },
+                            bin: {
+                                type: "boolean",
+                                title: "Discretize Data"  ,
+                                default: initial_spec.encoding.y.bin,
+                            },
+                            type: {
+                                type: 'string',
+                                title: 'Field Type',
+                                enum: ['quantitative', 'temporal', 'ordinal', 'nominal'],
+                                default: initial_spec.encoding.y.type,
+                            },
+                            timeUnit: {
+                                type: "string",
+                                title: "Time Unit (for 'Temporal' field type)",
+                                enum: ["none", "date", "day", "hours", "hoursminutes", "hoursminutesseconds", "milliseconds", "minutes", "minutesseconds", "month", "monthdate", "quarter", "quartermonth", "seconds", "secondsmilliseconds", "year", "yearmonth", "yearmonthdate", "yearmonthdatehours", "yearmonthdatehoursminutes", "yearmonthdatehoursminutesseconds", "yearquarter", "yearquartermonth" ],
+                                default: initial_spec.encoding.y.timeUnit,
+                            },
+                            aggregate: {
+                                type: "string",
+                                title: "Aggregate Function",
+                                enum: ["none", "argmax", "argmin", "average", "count", "distinct", "max", "mean", "median", "min", "missing", "modeskew", "q1", "q3", "stdev", "stdevp", "sum", "valid", "values", "variance", "variancep" ],
+                                default: initial_spec.encoding.y.aggregate,
+                            },
+                        }
+                    },
+                    // color: {
+                    //     type: "object",
+                    //     title: "Coloring",
+                    //     properties: {
+                    //
+                    //     }
+                    // }
+                }
+            },
+        },
+
+        values: initial_spec,
+
+        onSubmit: function (errors, values) {
+            if (errors) {
+                console.log(errors);
+            }
+            else {
+                if (values.encoding.x.aggregate == "none") {
+                    delete values.encoding.x['aggregate'];
+                }
+                if (values.encoding.y.aggregate == "none") {
+                    delete values.encoding.y['aggregate'];
+                }
+                if (values.encoding.x.timeUnit == "none") {
+                    delete values.encoding.x['timeUnit'];
+                }
+                if (values.encoding.y.timeUnit == "none") {
+                    delete values.encoding.y['timeUnit'];
+                }
+
+                initial_spec = values;
+
+                let copy = JSON.parse(JSON.stringify(initial_spec))
+                if (copy.encoding.y.enabled == false) {
+                    delete copy.encoding['y'];
+                }
+                if (copy.encoding.x.enabled == false) {
+                    delete copy.encoding['x'];
+                }
+                redo_vega(copy);
+            }
+        },
     });
-
-    // Two way binding definition for y_axis
-    let y_axis_manifest = {
-        data: {
-            'title': y_axis.title,
-        },
-
-        init: function ($node, runtime) {
-            let default_title = runtime.data.title;
-            $node.html(
-                `<label for="y_axis_title">Y Axis Title</label>` +
-                `<input type="text" class="form-control" id="y_axis_title" value="${default_title}">`
-            );
-        },
-
-        ui: {
-            "#y_axis_title": {
-                bind: function(data, value) {
-                    if (value != null && value.length > 0) {
-                        data.title = value;
-                    }
-                    return data.title;
-                }
-            },
-        }
-    };
-
-    let x_axis_manifest = {
-        data: {
-            'title': x_axis.title,
-        },
-
-        init: function($node, runtime) {
-            let default_title = runtime.data.title;
-            $node.html(
-                `<label for="x_axis_title">X Axis Title</label>` +
-                `<input type="text" class="form-control" id="x_axis_title" value="${default_title}">`
-            );
-        },
-
-        ui: {
-            "#x_axis_title": {
-                bind: function(data, value) {
-                    if (value != null && value.length > 0) {
-                        data.title = value;
-                    }
-                    return data.title;
-                }
-            },
-        }
-    };
-
-// Apply two way binding.
-x_axis_title_div.my( x_axis_manifest, x_axis );
-y_axis_title_div.my( y_axis_manifest, y_axis );
-
-//
 });
 

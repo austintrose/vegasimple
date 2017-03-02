@@ -1,13 +1,11 @@
 {% extends "layout.html" %}
 
 {% block js_pre %}
-<!-- Vega Lite requirements -->
 {% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <button id="update_graph_button" class="btn btn-default">Update Graph</button>
         <span id="new_actions_span"></span>
     </div>
 </div>
@@ -26,10 +24,35 @@
         <h1>Controls</h1>
         <hr>
         <form id="vega_form">
-            <div class="form-group" id="x_axis_title_div">
-            </div>
-            <div class="form-group" id="y_axis_title_div">
-            </div>
+
+            <!--&lt;!&ndash;<div class="form-group" id="data_url_div">&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--<div class="form-group" id="mark_type_div">-->
+            <!--</div>-->
+
+            <!--<hr>-->
+
+            <!--<div class="checkbox" id="enable_x_axis_div">-->
+            <!--</div>-->
+
+            <!--<div class="checkbox" id="x_axis_bin_div">-->
+            <!--</div>-->
+
+            <!--<div class="form-group" id="x_axis_title_div">-->
+            <!--</div>-->
+
+            <!--<hr>-->
+
+            <!--<div class="checkbox" id="enable_y_axis_div">-->
+            <!--</div>-->
+
+            <!--<div class="form-group" id="y_axis_title_div">-->
+            <!--</div>-->
+
+            <!--<hr>-->
+
+            <!--<button type="submit" id="update_graph_button" class="btn btn-default">Update Graph</button>-->
             <!--<div class="form-group">-->
                 <!--<label for="exampleInputPassword1">Password</label>-->
                 <!--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
@@ -52,5 +75,6 @@
 {% endblock %}
 
 {% block js_post %}
+<script src="/js/default_data.js" charset="utf-8"></script>
 <script src="/js/main.js" charset="utf-8"></script>
 {% endblock %}
